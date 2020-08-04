@@ -1,0 +1,32 @@
+JPA Entities:
+To store GPS content we need define below entities:
+- GPSMetadata: store GPS metadata content. It includes attributes : name, desc, author, time and link
+- Waypoint: store Waypoint content. It includes attributes: lat, lon, name and sym
+- Trackpoint: store Trackpoint content. It includes attributes: lat, lon, ele and time.
+- GPSTrack: contains list of trackpoints.
+- GPS: contains group of GPSMetadata, list of waypoints and GPSTrack.
+
+JPA Entities:
+- GPSMetadataRepository: to get metadata of GPS
+- GPSRepository: to get and insert detail GPS data
+
+Service:
+- GPSservice: convert .gpx file to GPS object then call repositories to insert/get GPS track data
+
+API Controller:
+There are three API to implement for three enpoint as requirements.
+
+- POST: /upload
+	+ parameter: "file" - a upload file .gpx with xml format
+	+ Action: parse content of .gpx file to GPS entity and store in H2 database
+
+- GET: /gps?pageNo=<>&pageSize=<>
+	+ parameter: pageNo, pageSize
+	+ Action: return list lastest GPS track, order by metadata.time desc. it only includes metadata of GPS track (not detail data of GPS track)
+
+- GET: /gps/{id}
+	+ parameter: id of GPS track
+	+ Action: return detail data of GPS track, includes: metadata, list of waypoints and GPSTrack value.
+
+Work flow:
+- API Controller --> GPSService --> Repositories --> Entities
